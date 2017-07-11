@@ -1,1 +1,1 @@
-include ':app', ':baidumap-loc+poi+lbs', ':unionpay'
+include ':app', ':baidumap-loc+poi+lbs', ':unionpay', ':alipay'
