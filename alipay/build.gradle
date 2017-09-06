@@ -38,7 +38,7 @@ uploadArchives {
   repositories {
     mavenDeployer {
       configuration = configurations.deployerJars
-      repository(url: "scp://root@121.43.123.201/root/nginx/maven")
+      repository(url: "scp://root@47.52.98.182/root/nginx/maven")
 //      repository(url: "file:///Users/zenochan/.m2/repository")
 
       pom.groupId = "com.alipay"
