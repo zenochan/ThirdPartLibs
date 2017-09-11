@@ -1,1 +1,1 @@
-include ':app', ':baidumap-loc+poi+lbs', ':unionpay', ':alipay', ':baidumap-loc+poi+lbs+map'
+include ':app', ':baidumap-loc+poi+lbs', ':unionpay', ':alipay', ':baidumap-loc+poi+lbs+map', ':baidumap-ext'
