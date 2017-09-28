@@ -7,10 +7,15 @@
 package name.zeno.ext.baidumap
 
 import android.os.Bundle
+import android.os.Parcelable
 import android.support.annotation.DrawableRes
 import android.view.View
+import com.baidu.location.BDLocation
 import com.baidu.mapapi.map.*
 import com.baidu.mapapi.model.LatLng
+import com.baidu.mapapi.model.LatLngBounds
+
+const val EXTRA_BD = "intent_data"
 
 
 /**
@@ -56,13 +61,38 @@ fun MapView.showInfoWindow(view: View, lat: Double, lng: Double, offsetY: Int)
     = showInfoWindow(view, LatLng(lat, lng), offsetY)
 
 fun MapView.showInfoWindow(view: View, position: LatLng, offsetY: Int) {
-  val window: InfoWindow = InfoWindow(view, position, offsetY)
+  val window = InfoWindow(view, position, offsetY)
   map.showInfoWindow(window)
-  map.hideInfoWindow()
 }
 
 fun MapView.hideInfoWindow() = map.hideInfoWindow()
 
+fun MapView.showThere(vararg positions: LatLng) = showThere(positions.toList())
+fun MapView.showThere(positions: List<LatLng>) {
+  val builder = LatLngBounds.Builder()
+  positions.forEach { builder.include(it) }
+  map.setMapStatusLimits(builder.build())
+}
+
+fun MapView.center(position: LatLng, zoom: Float = 18F) {
+  val status = MapStatus.Builder().target(position).zoom(zoom).build()
+  map.setMapStatus(MapStatusUpdateFactory.newMapStatus(status))
+}
+
+fun MapView.whereI(location: BDLocation, @DrawableRes res: Int) {
+  val locData = MyLocationData.Builder()
+      .accuracy(location.radius)
+      .direction(location.direction)
+      .latitude(location.latitude)
+      .longitude(location.longitude)
+      .build()
+
+  map.isMyLocationEnabled = true
+  map.setMyLocationData(locData)
+  val mCurrentMarker = BitmapDescriptorFactory.fromResource(res)
+  val config = MyLocationConfiguration(MyLocationConfiguration.LocationMode.FOLLOWING, true, mCurrentMarker);
+  map.setMyLocationConfiguration(config)
+}
 
 class IconOverlay(val mapView: MapView, position: LatLng) {
   private val options = MarkerOptions()
@@ -72,37 +102,40 @@ class IconOverlay(val mapView: MapView, position: LatLng) {
     options.position(position)
   }
 
-  fun icon(@DrawableRes res: Int) = {
+  fun icon(@DrawableRes res: Int): IconOverlay {
     options.icon(BitmapDescriptorFactory.fromResource(res));
-    this
+    return this
   }
 
-  fun title(title: String) = {
+  fun title(title: String): IconOverlay {
     options.title(title)
-    this
+    return this
   }
 
-  fun zIndex(zIndex: Int) = {
+  fun zIndex(zIndex: Int): IconOverlay {
     options.zIndex(zIndex)
-    this
+    return this
   }
 
-  fun draggable(draggable: Boolean) = {
+  fun draggable(draggable: Boolean): IconOverlay {
     options.draggable(draggable)
-    this
+    return this
   }
 
-  fun extraInfo(extra: Bundle) = {
+  fun data(data: Parcelable): IconOverlay {
+    val extra = Bundle()
+    extra.putParcelable(EXTRA_BD, data)
     options.extraInfo(extra)
-    this
+    return this
   }
 
-  fun onClick(onClick: (overlay: Overlay) -> Unit) = {
+
+  fun onClick(onClick: (overlay: Overlay) -> Unit): IconOverlay {
     this.onClick = onClick
-    this
+    return this
   }
 
-  fun add() = {
+  fun add() {
     val overlay = mapView.map.addOverlay(options)
     val onClick = onClick
     if (onClick != null) {
@@ -115,4 +148,3 @@ class IconOverlay(val mapView: MapView, position: LatLng) {
     }
   }
 }
-

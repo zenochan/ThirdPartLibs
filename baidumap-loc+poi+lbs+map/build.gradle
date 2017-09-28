@@ -7,10 +7,10 @@ mavenConf {
 
   groupId "com.baidu.mapapi"
   artifactId "LocPoiLBSMap"
-  version "4.4.1"
+  version "4.5.0"
 
 //  repositoryUrl "file:///Users/zenochan/.m2/repository"
-  repositoryUrl "scp://root@47.52.98.182/root/nginx/maven"
+  repositoryUrl "scp://root@mjtown.cn/root/nginx/maven"
 }
 confMaven()
 
@@ -22,7 +22,7 @@ android {
     minSdkVersion 15
     targetSdkVersion 26
     versionCode 1
-    versionName "1.0"
+    versionName mavenConf.version
 
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 

@@ -1,17 +1,30 @@
 apply plugin: 'com.android.library'
+apply from: 'http://maven.mjtown.cn/maven.gradle'
+mavenConf {
+  projectName "百度地图"
+  projectDesc "全量定位 + POI + LBS"
+  projectUrl "https://github.com/zenochan/ThirdPartLibs"
+
+  groupId "com.baidu.mapapi"
+  artifactId "LocPoiLBS"
+  version "4.5.0"
+
+//  repositoryUrl "file:///Users/zenochan/.m2/repository"
+  repositoryUrl "scp://root@mjtown.cn/root/nginx/maven"
+}
+confMaven()
 
 android {
-  compileSdkVersion 25
-  buildToolsVersion "25.0.3"
+  compileSdkVersion 26
+  buildToolsVersion "26.0.1"
 
   defaultConfig {
     minSdkVersion 15
-    targetSdkVersion 25
+    targetSdkVersion 26
     versionCode 1
-    versionName "4.3.1"
+    versionName mavenConf.version
 
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
   }
   buildTypes {
     release {
@@ -28,66 +41,3 @@ dependencies {
   })
   testCompile 'junit:junit:4.12'
 }
-
-apply plugin: 'maven'
-uploadArchives {
-  repositories {
-    mavenDeployer {
-      repository(url: "file:///Users/zenochan/.m2/repository")
-
-      pom.groupId = "com.baidu.mapapi"
-      pom.artifactId = 'LocPoiLBS'
-      pom.version = android.defaultConfig.versionName
-
-      pom.project {
-        name '百度地图SDK'
-        packaging 'aar'
-        description '全量定位 + 检索功能 + LBS 云检索'
-        url 'https://github.com/zenochan/cart-anim'
-
-        scm {
-          url 'https://github.com/nuuneoi/FBLikeAndroid'
-          connection 'https://github.com/zenochan/cart-anim'
-          developerConnection 'https://github.com/zenochan/cart-anim'
-        }
-
-        licenses {
-          license {
-            name 'The Apache Software License, Version 2.0'
-            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-            distribution 'Apache-2.0'
-          }
-        }
-
-        developers {
-          developer {
-            id 'zenochan'
-            name 'Zeno Chan'
-            email 'zenochan@qq.com'
-          }
-        }
-      }
-    }
-  }
-}
-
-task sourcesJar(type: Jar) {
-  from android.sourceSets.main.java.srcDirs
-  classifier = 'sources'
-}
-
-task javadoc(type: Javadoc) {
-  source = android.sourceSets.main.java.srcDirs
-  classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-  failOnError false
-}
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-  classifier = 'javadoc'
-  from javadoc.destinationDir
-}
-artifacts {
-  archives javadocJar
-  archives sourcesJar
-}
-

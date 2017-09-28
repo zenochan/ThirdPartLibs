@@ -10,10 +10,10 @@ mavenConf {
 
   groupId "name.zeno.ext"
   artifactId "BaiduMap"
-  version "0.0.1"
+  version "0.0.2-SNAPSHOT"
 
-//  repositoryUrl "file:///Users/zenochan/.m2/repository"
-  repositoryUrl "scp://root@mjtown.cn/root/nginx/maven"
+  repositoryUrl "file:///Users/zenochan/.m2/repository"
+//  repositoryUrl "scp://root@mjtown.cn/root/nginx/maven"
 }
 confMaven()
 
@@ -38,20 +38,15 @@ android {
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
   }
-
 }
 
 dependencies {
   api fileTree(dir: 'libs', include: ['*.jar'])
-  provided 'com.android.support:appcompat-v7:26.0.2'
+  provided 'com.android.support:appcompat-v7:26.1.0'
   testApi 'junit:junit:4.12'
   androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.1', {
     exclude group: 'com.android.support', module: 'support-annotations'
   })
   provided "com.baidu.mapapi:LocPoiLBSMap:4.4.1"
   provided "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-}
-repositories {
-  mavenCentral()
-  maven { url "http://maven.mjtown.cn/" }
 }
