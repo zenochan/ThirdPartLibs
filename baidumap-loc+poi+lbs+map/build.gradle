@@ -3,24 +3,23 @@ apply from: 'http://maven.mjtown.cn/maven.gradle'
 mavenConf {
   projectName "百度地图"
   projectDesc "全量定位 + POI + LBS + Map"
-  projectUrl "https://github.com/zenochan/ThirdPartLibs"
 
   groupId "com.baidu.mapapi"
   artifactId "LocPoiLBSMap"
-  version "4.5.0"
+  version "4.5.0-SNAPSHOT"
 
-//  repositoryUrl "file:///Users/zenochan/.m2/repository"
-  repositoryUrl "scp://root@mjtown.cn/root/nginx/maven"
+  repositoryUrl "file:///Users/zenochan/.m2/repository"
+//  repositoryUrl "scp://root@mjtown.cn/root/nginx/maven"
 }
 confMaven()
 
 android {
-  compileSdkVersion 26
-  buildToolsVersion "26.0.1"
+  compileSdkVersion 27
+  buildToolsVersion '27.0.3'
 
   defaultConfig {
     minSdkVersion 15
-    targetSdkVersion 26
+    targetSdkVersion 27
     versionCode 1
     versionName mavenConf.version
 
@@ -36,9 +35,9 @@ android {
 }
 
 dependencies {
-  compile fileTree(dir: 'libs', include: ['*.jar'])
-  androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+  api fileTree(dir: 'libs', include: ['*.jar'])
+  androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
     exclude group: 'com.android.support', module: 'support-annotations'
   })
-  testCompile 'junit:junit:4.12'
+  testImplementation 'junit:junit:4.12'
 }

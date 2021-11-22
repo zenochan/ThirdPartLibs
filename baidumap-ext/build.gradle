@@ -18,13 +18,13 @@ mavenConf {
 confMaven()
 
 android {
-  compileSdkVersion 26
-  buildToolsVersion "26.0.1"
+  compileSdkVersion 27
+  buildToolsVersion '27.0.3'
 
 
   defaultConfig {
     minSdkVersion 15
-    targetSdkVersion 26
+    targetSdkVersion 27
     versionCode 1
     versionName "1.0"
 
@@ -42,11 +42,11 @@ android {
 
 dependencies {
   api fileTree(dir: 'libs', include: ['*.jar'])
-  provided 'com.android.support:appcompat-v7:26.1.0'
+  provided "com.android.support:appcompat-v7:$support_version"
   testApi 'junit:junit:4.12'
   androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.1', {
     exclude group: 'com.android.support', module: 'support-annotations'
   })
-  provided "com.baidu.mapapi:LocPoiLBSMap:4.4.1"
+  provided "com.baidu.mapapi:LocPoiLBSMap:4.5.0"
   provided "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 }

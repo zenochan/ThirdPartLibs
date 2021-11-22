@@ -1,14 +1,14 @@
 apply plugin: 'com.android.library'
 
 android {
-  compileSdkVersion 26
-  buildToolsVersion "26.0.1"
+  compileSdkVersion 27
+  buildToolsVersion "27.0.3"
 
   defaultConfig {
     minSdkVersion 15
-    targetSdkVersion 26
+    targetSdkVersion 27
     versionCode 1
-    versionName "20170623"
+    versionName "20180403"
 
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -22,77 +22,20 @@ android {
 }
 
 dependencies {
-  compile fileTree(dir: 'libs', include: ['*.jar'])
-  androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+  api fileTree(dir: 'libs', include: ['*.jar'])
+  androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
     exclude group: 'com.android.support', module: 'support-annotations'
   })
-  testCompile 'junit:junit:4.12'
+  testImplementation 'junit:junit:4.12'
 }
 
-apply plugin: 'maven'
-configurations { deployerJars }
-dependencies { deployerJars "org.apache.maven.wagon:wagon-ssh:2.2" }
+apply from: 'http://maven.mjtown.cn/maven.gradle'
+mavenConf {
+  groupId = "com.alipay"
+  artifactId = 'alipay'
+  version = android.defaultConfig.versionName
 
-uploadArchives {
-  repositories {
-    mavenDeployer {
-      configuration = configurations.deployerJars
-      repository(url: "scp://root@47.52.98.182/root/nginx/maven")
-//      repository(url: "file:///Users/zenochan/.m2/repository")
-
-      pom.groupId = "com.alipay"
-      pom.artifactId = 'alipay'
-      pom.version = android.defaultConfig.versionName
-
-      pom.project {
-        name '银联支付SDK'
-        packaging 'aar'
-        description '银联支付SDK'
-        url 'https://github.com/zenochan/cart-anim'
-
-        scm {
-          url 'https://github.com/nuuneoi/FBLikeAndroid'
-          connection 'https://github.com/zenochan/cart-anim'
-          developerConnection 'https://github.com/zenochan/cart-anim'
-        }
-
-        licenses {
-          license {
-            name 'The Apache Software License, Version 2.0'
-            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-            distribution 'Apache-2.0'
-          }
-        }
-
-        developers {
-          developer {
-            id 'zenochan'
-            name 'Zeno Chan'
-            email 'zenochan@qq.com'
-          }
-        }
-      }
-    }
-  }
+//  repositoryUrl "file:///Users/zenochan/.m2/repository"
+  repositoryUrl "scp://root@mjtown.cn/root/nginx/maven"
 }
-
-task sourcesJar(type: Jar) {
-  from android.sourceSets.main.java.srcDirs
-  classifier = 'sources'
-}
-
-task javadoc(type: Javadoc) {
-  source = android.sourceSets.main.java.srcDirs
-  classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-  failOnError false
-}
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-  classifier = 'javadoc'
-  from javadoc.destinationDir
-}
-
-artifacts {
-  archives javadocJar
-  archives sourcesJar
-}
+confMaven()
